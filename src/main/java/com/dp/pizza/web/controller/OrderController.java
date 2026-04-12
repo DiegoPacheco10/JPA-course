@@ -4,6 +4,7 @@ import com.dp.pizza.domain.dto.OrderDTO;
 import com.dp.pizza.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,7 @@ public class OrderController {
         return ResponseEntity.ok(this.orderService.getTodayOrders());
     }
 
+    @Secured("ROLE_CUSTOMER")
     @GetMapping("/outside")
     public ResponseEntity<List<OrderDTO>> getOutsideOrders(){
         return ResponseEntity.ok(this.orderService.getOutSide());
