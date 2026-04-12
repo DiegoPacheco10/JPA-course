@@ -21,12 +21,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest()
-                        //.permitAll()
-                        .authenticated()
+
+
                         //.requestMatchers(HttpMethod.GET, "/api/*").permitAll() //No auth
                         //.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // No auth
-
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers(HttpMethod.POST).hasRole("ADMIN") //JUST FOR ADMIN
+                        .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                        .requestMatchers("/api/orders/**").hasRole("ADMIN")
+                        .anyRequest()
+                        .authenticated()
+                        //.permitAll()
                 ).httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults());
@@ -42,7 +47,14 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(admin);
+
+        UserDetails customer = User.builder()
+                .username("customer")
+                .password(passwordEncoder().encode("customer123"))
+                .roles("CUSTOMER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, customer);
     }
 
     @Bean
