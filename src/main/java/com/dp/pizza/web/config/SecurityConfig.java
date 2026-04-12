@@ -25,7 +25,7 @@ public class SecurityConfig {
 
                         //.requestMatchers(HttpMethod.GET, "/api/*").permitAll() //No auth
                         //.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // No auth
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.POST).hasRole("ADMIN") //JUST FOR ADMIN
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
                         .requestMatchers("/api/orders/**").hasRole("ADMIN")
