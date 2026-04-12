@@ -19,7 +19,8 @@ public class SecurityConfig {
                         .authenticated()
 
                 ).httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults());
         return httpSecurity.build();
     }
 }
