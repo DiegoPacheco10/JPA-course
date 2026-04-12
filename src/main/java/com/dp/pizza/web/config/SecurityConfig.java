@@ -25,10 +25,11 @@ public class SecurityConfig {
 
                         //.requestMatchers(HttpMethod.GET, "/api/*").permitAll() //No auth
                         //.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // No auth
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN")
+                        //.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.POST).hasRole("ADMIN") //JUST FOR ADMIN
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
-                        .requestMatchers("/api/orders/**").hasRole("ADMIN")
+                        .requestMatchers("/api/order/outside").hasAuthority("random_order")
+                        .requestMatchers("/api/order/**").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                         //.permitAll()
