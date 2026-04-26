@@ -3,7 +3,9 @@ package com.dp.pizza.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,8 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-
-
+                        .requestMatchers("/api/auth/**").permitAll()
                         //.requestMatchers(HttpMethod.GET, "/api/*").permitAll() //No auth
                         //.requestMatchers(HttpMethod.GET, "/api/**").permitAll() // No auth
                         //.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN")
@@ -60,6 +61,12 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin, customer);
     }
     */
+
+    @Bean
+    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration){
+        return configuration.getAuthenticationManager();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
